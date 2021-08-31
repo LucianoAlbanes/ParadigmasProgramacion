@@ -19,7 +19,7 @@ public class E18_SquareAsterisks {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        // Read user input size and print
+        // Read user input size
         System.out.print("Insert size: ");
         int userSize = input.nextInt();
 
