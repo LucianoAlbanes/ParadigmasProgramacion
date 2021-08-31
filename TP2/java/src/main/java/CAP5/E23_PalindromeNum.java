@@ -16,7 +16,7 @@ public class E23_PalindromeNum {
 
         // Read user input int
         System.out.print("Insert an integer to check: ");
-        int userInt = input.nextInt();
+        long userInt = input.nextLong();
 
         // Check and print result
         if (isPalindrome(userInt)) {
@@ -26,9 +26,9 @@ public class E23_PalindromeNum {
         }
     }
 
-    public static boolean isPalindrome(int n) {
-        String numAsString = Integer.toString(n);
-        int halfSize = (int) Math.floor(numAsString.length() / 2);
+    public static boolean isPalindrome(long n) {
+        String numAsString = Long.toString(n);
+        long halfSize = (long) Math.floor(numAsString.length() / 2);
 
         // Is palindrome until proven otherwise
         boolean isPalindromeFlag = true;
