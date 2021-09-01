@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         // Print different options and get user choice.
-        System.out.printf("%s%n%s%n%s%n%s%n%s%s%n%n%s",
+        System.out.printf("%s%n%s%n%s%n%s%n%s%n%s%n%s",
                 "Insert the exercise number...",
                 "   1 - Exercise 5.8 (Parking slot)",
                 "   2 - Exercise 5.18 (Square of asterisks)",

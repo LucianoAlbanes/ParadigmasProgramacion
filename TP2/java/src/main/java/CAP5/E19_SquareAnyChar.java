@@ -22,7 +22,7 @@ public class E19_SquareAnyChar {
         int userSize = input.nextInt();
 
         // Read user input size and print
-        System.out.print("Insert size: ");
+        System.out.print("Insert character to use: ");
         char userChar = input.next().charAt(0); // Take only the first given character
 
 
