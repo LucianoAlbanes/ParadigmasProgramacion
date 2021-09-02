@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         // Print different options and get user choice.
-        System.out.printf("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s",
+        System.out.printf("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s",
                 "Insert the exercise number...",
                 "   1 - Exercise 5.8 (Parking slot)",
                 "   2 - Exercise 5.18 (Square of asterisks)",
@@ -21,6 +21,7 @@ public class Main {
                 "   4 - Exercise 5.23 (Palindrome numbers)",
                 "   5 - Exercise 5.24 (Perfect numbers)",
                 "   6 - Exercise 5.25 (Prime numbers)",
+                "   7 - Exercise 5.27 (Greatest common divisor)",
                 "Your choice: "
         );
         Scanner input = new Scanner(System.in);
@@ -34,6 +35,7 @@ public class Main {
             case 4 -> E23_PalindromeNum.main(null);
             case 5 -> E24_PerfectNum.main(null);
             case 6 -> E25_Primes.main(null);
+            case 7 -> E27_GCDivisor.main(null);
             default -> System.out.printf("'%d' isn't a valid option. Try again please.", userChoice);
         }
     }
