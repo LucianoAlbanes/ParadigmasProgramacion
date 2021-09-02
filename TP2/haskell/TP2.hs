@@ -154,7 +154,6 @@ thirdC (x:(y:(z:zs))) = z
 --      a. conditional expression
 --      b. guarded equations
 --      c. pattern matching.
-
 safetailA :: [a] -> [a]
 safetailA x = if null x then x else tail x
 
@@ -184,7 +183,6 @@ expression5_1 = sum [x^2 | x <- [1..100]]
 -- grid :: Int -> Int -> [(Int,Int)] that returns a coordinate grid of a given size. For example:
 --      > grid 1 2
 --      [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2)]
-
 grid :: Int -> Int -> [(Int,Int)]
 grid m n = [(x, y) | x <- [0..m], y <- [0..n]]
 
@@ -193,7 +191,6 @@ grid m n = [(x, y) | x <- [0..m], y <- [0..n]]
 -- In a similar way to the function length , show how the library function
 -- replicate :: Int -> a -> [a] that produces a list of identical elements
 -- can be defined using a list comprehension.
-
 replicate' :: Int -> a -> [a] -- replicate' to differentiate of replicate from Prelude
 replicate' i x = [x | _ <- [1..i]]
 
@@ -204,7 +201,6 @@ replicate' i x = [x | _ <- [1..i]]
 -- that returns the list of all such triples whose components are at most a given limit. For example:
 --      > pyths 10
 --      [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
-
 pyths :: Int -> [(Int,Int,Int)]
 pyths x = [(a, b, c) | a <- [1..x], b <- [1..x], c <- [1..x], a^2 + b^2 == c^2]
 
@@ -213,7 +209,6 @@ pyths x = [(a, b, c) | a <- [1..x], b <- [1..x], c <- [1..x], a^2 + b^2 == c^2]
 -- A positive integer is perfect if it equals the sum of all of its factors, excluding the number itself.
 -- Using a list comprehension and the function factors , define a function perfects :: Int -> [Int]
 -- that returns the list of all perfect numbers up to a given limit.
-
 perfects :: Int -> [Int]
 perfects n = [x | x <- [1..n], (sum.factors) x == x]
 
@@ -225,7 +220,6 @@ factors x = [f | f <- [1..x-1], x `mod` f == 0]
 -- Show how the list comprehension [(x,y) | x <- [1,2], y <- [3,4]] with two generators
 -- can be re-expressed using two comprehensions with single generators. Hint: nest one
 -- comprehension within the other and make use of the library function concat :: [[a]] -> [a].
-
 expression5_7 :: Num a => [(a,a)]
 expression5_7 = concat [[(x, y) | y <- [3, 4]] | x <- [1, 2]]
 
@@ -259,7 +253,6 @@ sumdown n
 -- Define the exponentiation operator ^ for non-negative integers using the same pattern of recursion
 -- as the multiplication operator *, and show how the expression 2 ^ 3 is evaluated using your
 -- definition.
-
 exponentiation :: Int -> Int -> Int
 exponentiation n 0 = 1
 exponentiation n 1 = n
@@ -272,7 +265,6 @@ exponentiation n e = n * exponentiation n (e-1)
 -- equal, this number is the result; otherwise, the smaller number is subtracted from the larger, and the
 -- same process is then repeated. For example:
 --      > euclid 6 27 = 3
-
 euclid :: Int -> Int -> Int 
 euclid a b
         | b == 0 = a
