@@ -17,10 +17,10 @@ main = do
     putStrLn "     7 - Exercise 5.5 (Pythagorean triples)"
     putStrLn "     8 - Exercise 5.6 (Perfect numbers)"
     putStrLn "     9 - Exercise 5.7 (Re-expressed list using single generators)"
-    putStrLn "    10 - Exercise 6.1 ()"
-    putStrLn "    11 - Exercise 6.2 ()"
-    putStrLn "    12 - Exercise 6.3 ()"
-    putStrLn "    13 - Exercise 6.4 ()"
+    putStrLn "    10 - Exercise 6.1 (Factorial)"
+    putStrLn "    11 - Exercise 6.2 (Sumdown)"
+    putStrLn "    12 - Exercise 6.3 (Exponential operator)"
+    putStrLn "    13 - Exercise 6.4 (Greatest common divisor)"
 
     putStrLn "Your choice: "
     userChoice <- readLn
@@ -59,12 +59,12 @@ main = do
             print (safetailB [1,2,3])
             print (safetailC [1,2,3])
             return ()
-        
+
         4 -> do
             putStrLn "\nThe sum is equal to:"
             print expression5_1
             return()
-        
+
         5 -> do
             putStrLn "\nGenerating a gird of size 1 × 2:"
             print (grid 1 2)
@@ -89,7 +89,29 @@ main = do
             putStrLn "\nThe resultant list is:"
             print expression5_7
             return ()
-            
+
+        10 -> do
+            putStrLn "\nFactorial of 10:"
+            print (factorial 10)
+            putStrLn "\nFactorial of (-10) [returns (-1) when a negative number is introduced]:"
+            print (factorial (-10))
+            return ()
+
+        11 -> do
+            putStrLn "\nThe sumdown of 3 is:"
+            print (sumdown 3)
+            return ()
+
+        12 -> do
+            putStrLn "\nThe result of 2^3 is:"
+            print (2 `exponentiation` 3)
+            return ()
+
+        13 -> do
+            putStrLn "\nThe GCD of 27 and 6 is:"
+            print (euclid 27 6)
+            return ()
+
         _ -> do
             putStrLn "\nInvalid value, please try again."
 
@@ -206,3 +228,52 @@ factors x = [f | f <- [1..x-1], x `mod` f == 0]
 
 expression5_7 :: Num a => [(a,a)]
 expression5_7 = concat [[(x, y) | y <- [3, 4]] | x <- [1, 2]]
+
+
+
+{-----  CHAPTER 6  ----}
+
+-- 6.1
+-- How does the recursive version of the factorial function behave if applied to a negative argument,
+-- such as (-1) ? Modify the definition to prohibit negative arguments by adding a guard to the
+-- recursive case.
+factorial :: Int -> Int
+factorial n
+        | n < 0 = -1 -- Will return (-1) if a negative number is introduced
+        | n == 0 = 1
+        | otherwise = n * factorial (n-1)
+
+
+-- 6.2
+-- Define a recursive function sumdown :: Int -> Int that returns the sum of the non-negative
+-- integers from a given value down to zero.
+-- For example, sumdown 3 should return the result 3+2+1+0 = 6
+sumdown :: Int -> Int
+sumdown n
+        | n < 0 = -1 -- Will return (-1) if a negative number is introduced
+        | n == 0 = 0
+        | otherwise = n + sumdown (n-1)
+
+
+-- 6.3
+-- Define the exponentiation operator ^ for non-negative integers using the same pattern of recursion
+-- as the multiplication operator *, and show how the expression 2 ^ 3 is evaluated using your
+-- definition.
+
+exponentiation :: Int -> Int -> Int
+exponentiation n 0 = 1
+exponentiation n 1 = n
+exponentiation n e = n * exponentiation n (e-1)
+
+
+-- 6.4
+-- Define a recursive function euclid :: Int -> Int -> Int that implements Euclid’s algorithm
+-- for calculating the greatest common divisor of two non-negative integers: if the two numbers are
+-- equal, this number is the result; otherwise, the smaller number is subtracted from the larger, and the
+-- same process is then repeated. For example:
+--      > euclid 6 27 = 3
+
+euclid :: Int -> Int -> Int 
+euclid a b
+        | b == 0 = a
+        | otherwise = euclid b (a `mod` b)
