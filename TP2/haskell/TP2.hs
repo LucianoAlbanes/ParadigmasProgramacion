@@ -11,12 +11,12 @@ main = do
     putStrLn "     1 - Exercise 4.1 (Split list into two halves)"
     putStrLn "     2 - Exercise 4.2 (Third element of a list using different methods)"
     putStrLn "     3 - Exercise 4.3 (Safetail)"
-    putStrLn "     4 - Exercise 5.1 ()"
-    putStrLn "     5 - Exercise 5.2 ()"
-    putStrLn "     6 - Exercise 5.4 ()"
-    putStrLn "     7 - Exercise 5.5 ()"
-    putStrLn "     8 - Exercise 5.6 ()"
-    putStrLn "     9 - Exercise 5.7 ()"
+    putStrLn "     4 - Exercise 5.1 (Sum squares from 1 to 100)"
+    putStrLn "     5 - Exercise 5.2 (Coordinate grid)"
+    putStrLn "     6 - Exercise 5.4 (Replicate)"
+    putStrLn "     7 - Exercise 5.5 (Pythagorean triples)"
+    putStrLn "     8 - Exercise 5.6 (Perfect numbers)"
+    putStrLn "     9 - Exercise 5.7 (Re-expressed list using single generators)"
     putStrLn "    10 - Exercise 6.1 ()"
     putStrLn "    11 - Exercise 6.2 ()"
     putStrLn "    12 - Exercise 6.3 ()"
@@ -58,7 +58,38 @@ main = do
             print (safetailA [1,2,3])
             print (safetailB [1,2,3])
             print (safetailC [1,2,3])
+            return ()
+        
+        4 -> do
+            putStrLn "\nThe sum is equal to:"
+            print expression5_1
+            return()
+        
+        5 -> do
+            putStrLn "\nGenerating a gird of size 1 × 2:"
+            print (grid 1 2)
+            return ()
 
+        6 -> do
+            putStrLn "\nGenerating an array of size 4 with the string \"Hello\""
+            print (replicate' 4 "Hello")
+            return ()
+
+        7 -> do
+            putStrLn "\nGenerating all pythagorean triples up to 10."
+            print (pyths 10)
+            return ()
+
+        8 -> do
+            putStrLn "\nFinding all perfect numbers up to 1000."
+            print (perfects 1000)
+            return ()
+
+        9 -> do
+            putStrLn "\nThe resultant list is:"
+            print expression5_7
+            return ()
+            
         _ -> do
             putStrLn "\nInvalid value, please try again."
 
@@ -119,3 +150,59 @@ safetailC x = tail x
 {-----  CHAPTER 5  ----}
 
 -- 5.1
+-- Using a list comprehension, give an expression that calculates the sum 1² + 2² + ... 100² of the first
+-- one hundred integer squares.
+expression5_1 :: Int
+expression5_1 = sum [x^2 | x <- [1..100]]
+
+
+-- 5.2
+-- Suppose that a coordinate grid of size m × n is given by the list of all pairs (x, y) of integers such
+-- that [ 0 <= x <= m  and  0 <= y <= n ]. Using a list comprehension, define a function
+-- grid :: Int -> Int -> [(Int,Int)] that returns a coordinate grid of a given size. For example:
+--      > grid 1 2
+--      [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2)]
+
+grid :: Int -> Int -> [(Int,Int)]
+grid m n = [(x, y) | x <- [0..m], y <- [0..n]]
+
+
+-- 5.4
+-- In a similar way to the function length , show how the library function
+-- replicate :: Int -> a -> [a] that produces a list of identical elements
+-- can be defined using a list comprehension.
+
+replicate' :: Int -> a -> [a] -- replicate' to differentiate of replicate from Prelude
+replicate' i x = [x | _ <- [1..i]]
+
+
+-- 5.5
+-- A triple (x, y, z) of positive integers is Pythagorean if it satisfies the equation x² + y² = z².
+-- Using a list comprehension with three generators, define a function pyths :: Int -> [(Int,Int,Int)]
+-- that returns the list of all such triples whose components are at most a given limit. For example:
+--      > pyths 10
+--      [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
+
+pyths :: Int -> [(Int,Int,Int)]
+pyths x = [(a, b, c) | a <- [1..x], b <- [1..x], c <- [1..x], a^2 + b^2 == c^2]
+
+
+-- 5.6
+-- A positive integer is perfect if it equals the sum of all of its factors, excluding the number itself.
+-- Using a list comprehension and the function factors , define a function perfects :: Int -> [Int]
+-- that returns the list of all perfect numbers up to a given limit.
+
+perfects :: Int -> [Int]
+perfects n = [x | x <- [1..n], (sum.factors) x == x]
+
+factors :: Int -> [Int]
+factors x = [f | f <- [1..x-1], x `mod` f == 0]
+
+
+-- 5.7
+-- Show how the list comprehension [(x,y) | x <- [1,2], y <- [3,4]] with two generators
+-- can be re-expressed using two comprehensions with single generators. Hint: nest one
+-- comprehension within the other and make use of the library function concat :: [[a]] -> [a].
+
+expression5_7 :: Num a => [(a,a)]
+expression5_7 = concat [[(x, y) | y <- [3, 4]] | x <- [1, 2]]
