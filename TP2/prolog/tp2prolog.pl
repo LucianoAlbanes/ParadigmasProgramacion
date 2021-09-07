@@ -252,3 +252,46 @@ price_with_tax(SKU, Price) :-
 
 
 /*-----  SECTION 2.3  ----*/
+
+% 2.3.i
+% A stack of blocks can be described by a collection of facts on(Block1, Block2),
+% which is true if Block1 is on Block2. Define a predicate above(Block1, Block2)
+% that is true if Block1 is above Block2 in the stack.
+% (Hint: above is the transitive closure of on.)
+on(5, 4).
+on(4, 3).
+on(3, 2).
+on(2, 1).
+on(1, 0).
+
+above2(High, Low) :- % above/2 conflicts with predicate at line 140
+    on(High, Low).
+above2(High, Low) :-
+    on(High, Temp),
+    above2(Temp, Low).
+
+
+% 2.3.ii
+% Add recursive rules for left_of and above from Exercise 2.1.iii
+% Define higher (Object1,Object2), which is true if Object1
+% is on a line higher than Object2 in Figure 2.3.
+% For example, the bicycle is higher than the fish in the figure.
+at_left(L, R) :-
+    left_of(L, R).
+at_left(L, R) :-
+    left_of(T, R),
+    at_left(L, T).
+
+higher(H, L) :-
+    above(H, L).
+higher(H, L) :-
+    above(H, T),
+    higher(T, L).
+
+
+% 2.3.iii
+% How many nodes are there in the proof tree for connected(a,e) using Programs 2.6 and 2.7?
+% In general, using Program 2.6 and a collection of edge/2 facts, how many nodes are there in a
+% proof tree establishing that two nodes are connected by a path containing n intermediate nodes?
+
+% Answer = 5 nodes.
