@@ -3,7 +3,10 @@
 * ALBANES Luciano Joaquín
 */
 
-/*-----  Test family tree  ----*/
+
+/*-----  SECTION 2.1  ----*/
+
+% TEST FAMILY TREE
 % Family root
 parent(alice, cristian).
 parent(alice, sara).
@@ -62,7 +65,7 @@ male(child6M).
 male(child11M).
 
 
-/*-----  NEEDED RULES  ----*/
+% NEEDED RULES
 sibling(X, Y):-
     parent(Z, X),
     parent(Z, Y),
@@ -80,8 +83,6 @@ brother(X, Y):-
     sibling(X, Y),
     male(X).
 
-
-/*-----  SECTION 2.1  ----*/
 
 % 2.1.i
 % Modify the rule for brother on page 21 to give a rule for sister,
@@ -131,7 +132,7 @@ son_in_law(X, Y):-
 % left_of(Object1,Object2) and above(Object1,Object2).
 % Define predicates right_of (Object1,Object2) and below(Object1,Object2)
 % in terms of left_of and above, respectively.
-left_of(bike, camera). % The bike is at the left of the camera
+left_of(bike, camera). % The bike is at the left of the camera left_of(atLeft, atRight).
 left_of(butterfly, fish).
 left_of(hourglass, butterfly).
 left_of(pencil, hourglass).
@@ -147,5 +148,107 @@ below(X, Y):-
 
 
 /*-----  SECTION 2.2  ----*/
+
+% EXAMPLE COURSES (COVID-19 Edition)
+course(paradigms, time(tuesday,    8, 11), lecturer(sergio,    prof), location(aula_abierta, bbb  )).
+course(paradigms, time(thursday,   8, 11), lecturer(sergio,    prof), location(aula_abierta, bbb  )).
+course(os,        time(monday,    18, 21), lecturer(alejandro, prof), location(aula_abierta, meet1)).
+course(os,        time(tuesday,   18, 21), lecturer(alejandro, prof), location(aula_abierta, meet1)).
+course(ai,        time(monday,    17, 20), lecturer(carlos,    prof), location(aula_abierta, meet2)).
+course(ai,        time(wednesday, 17, 20), lecturer(carlos,    prof), location(aula_abierta, meet2)).
+course(fooCourse, time(wednesday, 18, 21), lecturer(alice,     prof), location(aula_abierta, meet2)). % This one conflicts with ai wednesday (17-20) (meet2)
+
+% PREDEFINED RULES
+lecturer(Lecturer, Course):- 
+   course(Course, _, Lecturer, _).
+
+duration(Course, Length):- 
+    course(Course, time(_, Start, Finish), _, _),
+    plus(Start, Length, Finish).
+
+teaches(Lecturer, Day):-
+    course(_, time(Day, _, _), Lecturer, _).
+
+occupied(Room, Day, Time):-
+    course(_, time(Day, Start, Finish), _, Room),
+    Start =< Time, Time =< Finish.
+
+
+% 2.2.i
+% Add rules defining the relations location(Course, Building), busy(Lecturer, Time),
+% and cannot_meet(Lecturer1, Lecturer2). Test with your own course facts.
+location(Course, Building):-
+    course(Course, _, _, location(Building, _)).
+
+busy(Lecturer, Day, Time):- % !!! Added a Day variable, because if not will return true if ANY day of the week is busy at that Time.
+    course(_, time(Day, Start, Finish), Lecturer, _),
+    Start =< Time, Time =< Finish.
+
+cannot_meet(Lecturer1, Lecturer2, Day, Time):- % !!! Added Day and Time variable. If both lecturers are in a course in the specified time and day, verifies true.
+    course(_, time(Day, Start1, Finish1), Lecturer1, _),
+    course(_, time(Day, Start2, Finish2), Lecturer2, _),
+    Lecturer1 \= Lecturer2,
+    Start1 =< Time, Time =< Finish1,
+    Start2 =< Time, Time =< Finish2.
+
+
+% 2.2.ii
+% Possibly using relations from Exercise (i),
+% define the relation schedule_conflict(Time, Place, Course1, Course2).
+schedule_conflict(Time, Place, Course1, Course2):-
+    course(Course1, time(Day1, Start1, Finish1), _, Place),
+    course(Course2, time(Day2, Start2, Finish2), _, Place),
+    Course1 \= Course2,
+    Start1 =< Time, Time =< Finish1,
+    Start2 =< Time, Time =< Finish2,
+    Day1 == Day2.
+
+
+% 2.2.iii
+% Write a program to check if a student has met the requirements for a college degree.
+% Facts will be used to represent the courses that the student has taken and the grades obtained,
+% and rules will be used to enforce the college requirements.
+taken_courses(student_1, paradigms, 8).
+taken_courses(student_1, os,        9).
+taken_courses(student_1, ai,        7).
+taken_courses(student_1, fooCourse, 7).
+taken_courses(student_2, paradigms, 5).
+taken_courses(student_2, os,        8).
+taken_courses(student_2, ai,        9).
+taken_courses(student_2, fooCourse, 9).
+
+% This degree only has 4 courses. The minimum obtained grade per course is 6. 
+met_degree_requirements(Student) :-
+    taken_courses(Student, paradigms, A), A >= 6,
+    taken_courses(Student, os,        B), B >= 6,
+    taken_courses(Student, ai,        C), C >= 6,
+    taken_courses(Student, fooCourse, D), D >= 6.
+
+
+% 2.2.iv
+% Design a small database for an application of your own choice.
+% Use a single predicate to express the information, and invent suitable rules.
+
+% products_db(sku, brand, model, price, tax_porcentaje, stock, provider).
+products_db(100, amd,   ryzen_9_5950X,  723, 10.5, 5, computers_SA).
+products_db(101, amd,   ryzen_9_5900X,  497, 10.5, 3, computers_SA).
+products_db(102, amd,   ryzen_7_5800X,  373, 10.5, 9, computers_SA).
+products_db(103, amd,   ryzen_5_5600X,  271, 10.5, 8, computers_SA).
+products_db(104, amd,   ryzen_7_5700G,  324, 10.5, 4, computers_SA).
+products_db(105, amd,   ryzen_5_5600G,  234, 10.5, 5, computers_SA).
+products_db(106, intel, core_i9_11900K, 487, 10.5, 3, moore_INC   ).
+products_db(107, intel, core_i9_11900,  397, 10.5, 5, moore_INC   ).
+products_db(108, intel, core_i7_11700K, 361, 10.5, 0, moore_INC   ).
+products_db(109, intel, core_i5_11600K, 237, 10.5, 9, moore_INC   ).
+products_db(110, intel, core_i5_11500,  173, 10.5, 7, moore_INC   ).
+
+below_stock(Threshold, SKU) :-
+    products_db(SKU, _, _, _, _, Stock, _),
+    Stock =< Threshold.
+
+price_with_tax(SKU, Price) :-
+    products_db(SKU, _, _, Before_Tax_Price, Tax_Porcentaje, _, _),
+    Price is Before_Tax_Price * (1 + Tax_Porcentaje / 100).
+
 
 /*-----  SECTION 2.3  ----*/
