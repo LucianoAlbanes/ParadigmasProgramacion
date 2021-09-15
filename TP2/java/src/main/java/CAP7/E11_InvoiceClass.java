@@ -37,10 +37,10 @@ public class E11_InvoiceClass {
 
 class Invoice {
     // Attributes
-    String partNumber;
-    String partDescription;
-    int quantity;
-    double pricePerItem;
+    private String partNumber;
+    private String partDescription;
+    private int quantity;
+    private double pricePerItem;
 
     // Constructor
     public Invoice(String partNumber, String partDescription, int quantity, double pricePerItem) {
