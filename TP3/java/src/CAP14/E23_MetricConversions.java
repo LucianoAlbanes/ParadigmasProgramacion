@@ -14,7 +14,8 @@ public class E23_MetricConversions {
         userInput = userInput.trim().replaceAll("[^a-zA-Z0-9 ']", "");
         String[] words = userInput.split(" ");
 
-        // Analyze each word
+        // Initialize Converter class and analyze each word
+        Converter.initHashMap();
         double qnt = 1; // 1 as default
         String[] units = new String[2];
 
@@ -61,10 +62,11 @@ public class E23_MetricConversions {
 }
 
 class Converter {
-    public static Unit getUnit(String key) {
-        // Define a HashMap with all units
-        HashMap<String, Unit> unitsHashMap = new HashMap<>();
+    // Define a HashMap with all units
+    private static final HashMap<String, Unit> unitsHashMap = new HashMap<>(33);
 
+    public static void initHashMap() {
+        // Need to initialize, only performed once. HashMap is static
         // Length units
         unitsHashMap.put("millimeters", new LengthUnit(1000.));
         unitsHashMap.put("centimeters", new LengthUnit(100.));
@@ -106,7 +108,9 @@ class Converter {
         unitsHashMap.put("tons", new WeightUnit(0.000001));
         unitsHashMap.put("ounces", new WeightUnit(0.035274));
         unitsHashMap.put("pounds", new WeightUnit(0.00220462));
+    }
 
+    public static Unit getUnit(String key) {
         // Get and return value
         return unitsHashMap.get(key);
     }

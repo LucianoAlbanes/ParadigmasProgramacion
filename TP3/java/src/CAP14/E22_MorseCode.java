@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class E22_MorseCode {
     public static void main(String[] args) {
+        // Init MorseCode Translator
+        MorseCode.init();
         // Test Code
         System.out.println("To morse: \"The quick brown fox jumps over the lazy dog 1234567890\"");
         String morsePhrase = MorseCode.translateToMorse("The quick brown fox jumps over the lazy dog 1234567890");
@@ -24,9 +26,12 @@ public class E22_MorseCode {
 }
 
 class MorseCode {
-    public static String translateToMorse(String input) {
-        // Hashmap
-        HashMap<Character, String> engToMorse = new HashMap<>(35);
+    // Hashmaps
+    private static final HashMap<Character, String> engToMorse = new HashMap<>(35);
+    private static final HashMap<String, Character> morseToEng = new HashMap<>(35);
+
+    public static void init() {
+        // EngToMorse
         engToMorse.put('A', ".-");
         engToMorse.put('B', "-...");
         engToMorse.put('C', "-.-.");
@@ -64,24 +69,7 @@ class MorseCode {
         engToMorse.put('9', "----.");
         engToMorse.put('0', "-----");
 
-        // Translation
-        StringBuilder str = new StringBuilder();
-
-        for (char c : input.toCharArray()) {
-            c = Character.toUpperCase(c);
-            String morse = engToMorse.get(c);
-            if (morse != null) {
-                str.append(morse).append(" ");
-            }
-        }
-
-        // Return
-        return str.toString();
-    }
-
-    public static String translateToEng(String input) {
-        // Hashmap
-        HashMap<String, Character> morseToEng = new HashMap<>(35);
+        // MorseToEng
         morseToEng.put(".-", 'A');
         morseToEng.put("-...", 'B');
         morseToEng.put("-.-.", 'C');
@@ -118,12 +106,27 @@ class MorseCode {
         morseToEng.put("---..", '8');
         morseToEng.put("----.", '9');
         morseToEng.put("-----", '0');
+    }
 
+    public static String translateToMorse(String input) {
+        // Translation
+        StringBuilder str = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            c = Character.toUpperCase(c);
+            String morse = engToMorse.get(c);
+            if (morse != null) {
+                str.append(morse).append(" ");
+            }
+        }
+        // Return
+        return str.toString();
+    }
+
+    public static String translateToEng(String input) {
         // Translation
         StringBuilder str = new StringBuilder();
         input = input.trim();
         String[] tokens = input.split(" ");
-
         for (String morse : tokens) {
 
             Character eng = morseToEng.get(morse);
@@ -131,7 +134,6 @@ class MorseCode {
                 str.append(eng);
             }
         }
-
         // Return
         return str.toString();
     }
