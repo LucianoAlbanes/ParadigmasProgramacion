@@ -7,7 +7,7 @@ public class E23_MetricConversions {
     public static void main(String[] args) {
         // Input
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Insert a phrase (Order of values: toUnit fromUnit Qnt): ");
+        System.out.print("Insert a phrase (Order of values: toUnit fromUnit): ");
         String userInput = scanner.nextLine();
 
         // Prepare input
@@ -44,7 +44,7 @@ public class E23_MetricConversions {
         // Try to do the conversion
         try {
             double result = Converter.convert(qnt, units[1], units[0]);
-            System.out.printf("%n%.4f %s equals %.4f %s.%n", qnt, units[1], result, units[0]);
+            System.out.printf("%n%.4f %s equals to %.4f %s.%n", qnt, units[1], result, units[0]);
         } catch (Exception e) {
             System.err.printf("%nError: ");
             e.printStackTrace();

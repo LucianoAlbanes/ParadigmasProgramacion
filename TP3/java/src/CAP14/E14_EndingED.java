@@ -13,10 +13,10 @@ public class E14_EndingED {
         userInput = userInput.trim(); // Just in case
         String[] tokens = userInput.split(" ");
 
-        // Print words that end with "ED" (upperCase)
+        // Print words that end with "ED"
         System.out.print("Words that end with \"ED\": ");
         for (String token : tokens) {
-            if (token.endsWith("ED")) {
+            if (token.toUpperCase().endsWith("ED")) {
                 System.out.printf("%s, ", token);
             }
         }

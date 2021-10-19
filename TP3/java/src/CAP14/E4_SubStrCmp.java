@@ -9,7 +9,7 @@ public class E4_SubStrCmp {
         // User input
         System.out.print("Insert a first string to check: ");
         String str1 = scanner.next();
-        System.out.print("Insert a seconds string to check: ");
+        System.out.print("Insert a second string to check: ");
         String str2 = scanner.next();
 
         System.out.print("Insert number of characters to be compared: ");
