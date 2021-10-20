@@ -7,37 +7,37 @@ public class E27_SpamScanner {
     public static void main(String[] args) {
         // Create a spamDetector with these words
         SpamDetector spamDetector = new SpamDetector(
-                "Now",
                 "Apply",
+                "Best",
+                "Bonus",
                 "Buy",
+                "CC",
                 "Call",
-                "Here",
                 "Clearance",
+                "Credit",
+                "Deal",
+                "Dear",
+                "Discount",
                 "Expire",
+                "Free",
                 "Get",
+                "Guaranteed",
+                "Here",
                 "Important",
+                "Incredible",
+                "Join",
                 "Limited",
-                "Only",
+                "Membership",
+                "Now",
                 "Offer",
-                "Special",
+                "Only",
+                "Price",
+                "Prize",
                 "Promo",
                 "Promotion",
+                "Special",
                 "Urgent",
                 "Winner",
-                "Join",
-                "Bonus",
-                "Discount",
-                "Price",
-                "Best",
-                "Free",
-                "Incredible",
-                "Deal",
-                "Prize",
-                "Guaranteed",
-                "Credit",
-                "CC",
-                "Dear",
-                "Membership",
                 "Won");
 
         // User input
@@ -70,7 +70,7 @@ class SpamDetector {
         int spamScore = 0;
 
         // Prepare words
-        str = str.trim().replaceAll("[^a-zA-Z0-9 ']", ""); // Regex is keeping
+        str = str.trim().replaceAll("[^a-zA-Z0-9 ']", "");
         String[] words = str.split(" ");
 
         // Analyze
