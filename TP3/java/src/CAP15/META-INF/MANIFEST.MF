@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: CAP15.E9_PhishingScanner
+
