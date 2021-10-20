@@ -35,7 +35,6 @@ public class E23_MetricConversions {
                         units[0] = word;
                     } else {
                         units[1] = word;
-                        break; // All data needed was obtained.
                     }
                 }
             }
