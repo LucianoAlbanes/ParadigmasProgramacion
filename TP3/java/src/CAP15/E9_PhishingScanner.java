@@ -121,20 +121,10 @@ public class E9_PhishingScanner {
 }
 
 class PhishingDetector {
-    // HashMap used, will be initiated in constructor
+    // Instance variables.
+    // HashMap
     private final HashMap<String, LIKELY> bannedKeywords = new HashMap<>();
 
-    // Methods
-    public void addKeyword(String keyword, LIKELY likely) {
-        keyword = keyword.trim().toLowerCase();
-        bannedKeywords.put(keyword, likely);
-    }
-
-    public LIKELY getLikely(String keyword) {
-        return bannedKeywords.get(keyword.trim().toLowerCase());
-    }
-
-    // Instance variables.
     // Enum to indicate how likely is a keyword to be part of phishing. Offers a method to return ints that increase with likelihood.
     public enum LIKELY {
         LOW,
@@ -151,5 +141,15 @@ class PhishingDetector {
             }
             return x;
         }
+    }
+
+    // Methods
+    public void addKeyword(String keyword, LIKELY likely) {
+        keyword = keyword.trim().toLowerCase();
+        bannedKeywords.put(keyword, likely);
+    }
+
+    public LIKELY getLikely(String keyword) {
+        return bannedKeywords.get(keyword.trim().toLowerCase());
     }
 }
