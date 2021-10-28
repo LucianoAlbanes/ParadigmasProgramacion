@@ -22,6 +22,11 @@ public class MainGUI {
     private JLabel txt_csvAnalyzeResults;
 
     // Text tab
+    private JTextArea txtArea;
+    private JButton btn_textAnalyze;
+    private JLabel txt_textAnalyzeResults;
+
+    // Text tab
 
     // Constructor
     public MainGUI() {
@@ -29,8 +34,15 @@ public class MainGUI {
         btn_csvSelectFile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 csvMain();
+            }
+        });
+
+        // Listeners Text tab
+        btn_textAnalyze.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                textMain();
             }
         });
     }
@@ -81,7 +93,7 @@ public class MainGUI {
                         break; // Terminates
                     }
 
-                    // Add Columns
+                    // Add Columns titles (first row). Hidden by default
                     String[] columns = line.split(delimiter);
                     for (String column : columns) {
                         table.addColumn(column);
@@ -89,33 +101,34 @@ public class MainGUI {
                 }
 
                 // Add row to TableModel
-                String[] dataColumns = line.split(delimiter);
-                table.addRow(dataColumns);
+                String[] rowValues = line.split(delimiter);
+                table.addRow(rowValues);
 
-                // Analyze for numbers of *
-                for (String data : dataColumns) {
-                    String[] words = data.split("");
-                    n_Words += words.length; // N of words
+                // Analyze for stats
+                for (String value : rowValues) {
+                    value = value.trim();
+                    String[] valueWords = value.split(" ");
 
-                    for (String word : words) {
+                    for (String word : valueWords) {
                         if (word.isEmpty()) {
+                            // case of ""
                             continue;
                         }
-                        char first = word.charAt(0);
-                        if (Character.isUpperCase(first)) {
-                            n_Upper++; // n uppercase
-                        } else if (Character.isLowerCase(first)) {
-                            n_Lower++; // n lowercase
-                        }
+                        // Increments
+                        n_Words++; // +1 word
+                        n_Chars += word.length(); // +n characters
 
-                        n_Chars += word.length(); // n of chars
+                        if (Character.isUpperCase(word.charAt(0))) {
+                            n_Upper++; // +1 start with uppercase
+                        } else if (Character.isLowerCase(word.charAt(0))) {
+                            n_Lower++; // +1 start with lowercase
+                        }
 
                         for (char c : word.toCharArray()) {
                             if (Arrays.binarySearch(punctuationMarks, c) >= 0) {
-                                n_PMarks++; // n of punctuation marks
+                                n_PMarks++; // +1 punctuation mark
                             }
                         }
-
                     }
                 }
             }
@@ -126,15 +139,60 @@ public class MainGUI {
                 // Update analysis of txt
                 txt_csvAnalyzeResults.setText(htmlFormatterAnalysisResume(n_Words, n_Chars, n_PMarks, n_Upper, n_Lower));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
-    // Methods
+    // Text Main
+    public void textMain() {
+        // Initialize counters
+        int n_Words = 0;
+        int n_Chars = 0;
+        int n_PMarks = 0;
+        int n_Upper = 0;
+        int n_Lower = 0;
+
+        // Defining to check for punctuation marks later!
+        char[] punctuationMarks = {'.', ',', ':', ';', '\'', '"', '(', ')', '!', '?'};
+        Arrays.sort(punctuationMarks); // Will perform a binarySearch
+
+        // Get the text from the JTextArea
+        String text = txtArea.getText();
+
+        // Replace tabs and new lines with spaces, split in words
+        text = text.replaceAll("[\t\n]", " ");
+        String[] words = text.split(" ");
+
+        // Analyze each word
+        for (String word : words) {
+            if (word.isEmpty()) {
+                // case of ""
+                continue;
+            }
+            // Increments
+            n_Words++; // +1 word
+            n_Chars += word.length(); // +n characters
+
+            if (Character.isUpperCase(word.charAt(0))) {
+                n_Upper++; // +1 start with uppercase
+            } else if (Character.isLowerCase(word.charAt(0))) {
+                n_Lower++; // +1 start with lowercase
+            }
+
+            for (char c : word.toCharArray()) {
+                if (Arrays.binarySearch(punctuationMarks, c) >= 0) {
+                    n_PMarks++; // +1 punctuation mark
+                }
+            }
+        }
+
+        // Update Results JLabel
+        txt_textAnalyzeResults.setText(htmlFormatterAnalysisResume(n_Words, n_Chars, n_PMarks, n_Upper, n_Lower));
+    }
+
+
+    // Misc methods
     public File getFileWithFileChooser() {
         // Create and show a FileChooser, returns a File Object.
         JFileChooser fileChooser = new JFileChooser();
@@ -169,11 +227,10 @@ public class MainGUI {
                 "N' of words: " + n_Words + "<br/>" +
                 "N' of characters: " + n_Chars + "<br/>" +
                 "N' of punt. marks: " + n_PMarks + "<br/>" +
-                "N' of uppercase chars: " + n_Upper + "<br/>" +
-                "N' of lowercase chars: " + n_Lower + "<br/>" +
+                "Starts with uppercase: " + n_Upper + "<br/>" +
+                "Starts with lowercase: " + n_Lower + "<br/>" +
                 "</html>";
     }
-
 }
 
 /**
