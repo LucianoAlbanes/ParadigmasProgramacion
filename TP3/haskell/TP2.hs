@@ -3,10 +3,11 @@ Paradigmas de Programación 2021 - F. Ingeniería - UNCUYO
 ALBANES Luciano Joaquín
 -}
 
-import System.IO (putStr)
+import System.IO ( hSetBuffering, stdout, BufferMode(NoBuffering) )
 main :: IO ()
 
 main = do
+    hSetBuffering stdout NoBuffering
     putStrLn "Insert the exercise number..."
     putStrLn "    1 - Third character of a string"
     putStrLn "    2 - Factorial"
