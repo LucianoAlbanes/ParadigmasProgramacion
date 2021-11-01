@@ -97,7 +97,7 @@ class Race {
 
     // Add racers
     public void addRacer(Color color, int offset) {
-        racers.add(Racer.racerFactory(racerType, color, offset, raceCanvas.getGraphics(), racePath));
+        racers.add(Racer.racerFactory(racerType, color, offset, this));
     }
 
     // Start race (racers threads)
@@ -105,6 +105,15 @@ class Race {
         for (Racer racer : racers) {
             racer.start();
         }
+    }
+
+    // Getters
+    public Graphics getRaceGraphics() {
+        return raceCanvas.getGraphics();
+    }
+
+    public RacePath getRacePath() {
+        return racePath;
     }
 }
 
@@ -151,34 +160,32 @@ abstract class Racer extends Thread {
     // Attributes
     private static final Random rdn = new Random();
     private final Color color;
-    private final Graphics graphics;
-    private final RacePath racePath;
+    private final Race race;
     private final int offset;
     protected float speedFactor;
     private int position;
 
     // Constructor
-    public Racer(Color color, int offset, Graphics graphics, RacePath racePath) {
+    public Racer(Color color, int offset, Race race) {
         this.color = color;
-        this.graphics = graphics;
-        this.racePath = racePath;
+        this.race = race;
         this.offset = offset;
     }
 
     // Get corresponding class
-    public static Racer racerFactory(int racerID, Color color, int offset, Graphics graphics, RacePath racePath) {
+    public static Racer racerFactory(int racerID, Color color, int offset, Race race) {
         switch (racerID) {
             case 0 -> {
-                return new Car(color, offset, graphics, racePath);
+                return new Car(color, offset, race);
             }
             case 1 -> {
-                return new Bike(color, offset, graphics, racePath);
+                return new Bike(color, offset, race);
             }
             case 2 -> {
-                return new Person(color, offset, graphics, racePath);
+                return new Person(color, offset, race);
             }
             case 3 -> {
-                return new Horse(color, offset, graphics, racePath);
+                return new Horse(color, offset, race);
             }
             default -> throw new IllegalArgumentException("racerID \"" + racerID + "\" isn't valid.");
         }
@@ -188,7 +195,8 @@ abstract class Racer extends Thread {
     @Override
     public void run() {
         long time = System.currentTimeMillis();
-        int[][] coordinates = racePath.getCoordinates();
+        int[][] coordinates = race.getRacePath().getCoordinates();
+        Graphics raceGraphics = race.getRaceGraphics();
         boolean running = true;
         while (running) {
             // increment position (into coordinates array)
@@ -202,49 +210,49 @@ abstract class Racer extends Thread {
             }
 
             // Increment and draw
-            graphics.setColor(color);
-            graphics.drawRoundRect(coordinates[0][position] + offset, coordinates[1][position] + offset,
+            raceGraphics.setColor(color);
+            raceGraphics.drawRoundRect(coordinates[0][position] + offset, coordinates[1][position] + offset,
                     2, 2, 1, 1);
 
             // Check if finished
-            if (position == racePath.getSize() - 1) {
+            if (position == race.getRacePath().getSize() - 1) {
                 running = false;
             }
         }
 
         // Write time
-        graphics.fillOval(5, 350 + offset * 25, 16, 16); // Filled oval with color
-        graphics.setColor(Color.BLACK);
-        graphics.drawOval(5, 350 + offset * 25, 16, 16); // Draw oval with black
+        raceGraphics.fillOval(5, 350 + offset * 25, 16, 16); // Filled oval with color
+        raceGraphics.setColor(Color.BLACK);
+        raceGraphics.drawOval(5, 350 + offset * 25, 16, 16); // Draw oval with black
         String completedIn = String.valueOf(System.currentTimeMillis() - time);
-        graphics.drawString(String.format("%s:%s sec.", completedIn.substring(0, 2), completedIn.substring(2, 5)), 25, 365 + offset * 25); // Next to it, time
+        raceGraphics.drawString(String.format("%s:%s sec.", completedIn.substring(0, 2), completedIn.substring(2, 5)), 25, 365 + offset * 25); // Next to it, time
     }
 }
 
 class Car extends Racer {
-    public Car(Color color, int offset, Graphics graphics, RacePath racePath) {
-        super(color, offset, graphics, racePath);
+    public Car(Color color, int offset, Race race) {
+        super(color, offset, race);
         speedFactor = 0.5f;
     }
 }
 
 class Bike extends Racer {
-    public Bike(Color color, int offset, Graphics graphics, RacePath racePath) {
-        super(color, offset, graphics, racePath);
+    public Bike(Color color, int offset, Race race) {
+        super(color, offset, race);
         speedFactor = 1f;
     }
 }
 
 class Person extends Racer {
-    public Person(Color color, int offset, Graphics graphics, RacePath racePath) {
-        super(color, offset, graphics, racePath);
+    public Person(Color color, int offset, Race race) {
+        super(color, offset, race);
         speedFactor = 2;
     }
 }
 
 class Horse extends Racer {
-    public Horse(Color color, int offset, Graphics graphics, RacePath racePath) {
-        super(color, offset, graphics, racePath);
+    public Horse(Color color, int offset, Race race) {
+        super(color, offset, race);
         speedFactor = 1.7f;
     }
 }
